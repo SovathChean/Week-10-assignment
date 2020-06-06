@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -14,6 +15,11 @@ class PostController extends Controller
     public function index()
     {
         //
+        $num = config('setting.pagination_category_num');
+        $posts = Post::paginate($num);
+
+        return view('post.index', ['posts'=> $posts]);
+
     }
 
     /**
@@ -57,6 +63,7 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        return ('hello'.$id);
     }
 
     /**
@@ -80,5 +87,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        return ('hello'.$id);
     }
 }
