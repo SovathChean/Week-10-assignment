@@ -10,17 +10,17 @@
        @foreach($categories as $category)
        <tr>
            <td>{{$category->id}}</td>
-           <td>{{$catgory->name}}</td>
+           <td>{{$category->name}}</td>
            <td>
-             {!! Form::open(['method'=>'GET', 'action'=>['PostController@edit', $category->id], 'style'=>'display: inline-block']) !!}
+             {!! Form::open(['method'=>'GET', 'action'=>['CategoryController@edit', $category->id], 'style'=>'display: inline-block']) !!}
              {!! Form::submit('update', ['class'=>'btn btn-outline-info']) !!}
              {!! Form::close() !!}
 
-             {!! Form::open(['method'=>'DELETE', 'action'=>['PostController@destroy', $category->id], 'style'=>'display: inline-block']) !!}
+             {!! Form::open(['method'=>'DELETE', 'action'=>['CategoryController@destroy', $category->id], 'style'=>'display: inline-block']) !!}
              {!! Form::submit('delete', ['class'=>'btn btn-outline-danger']) !!}
              {!! Form::close() !!}
 
-             {!! Form::open(['method'=>'GET', 'action'=>['PostController@show', $category->id], 'style'=>'display: inline-block']) !!}
+             {!! Form::open(['method'=>'GET', 'action'=>['CategoryController@show', $category->id], 'style'=>'display: inline-block']) !!}
              {!! Form::submit('Show', ['class'=>'btn btn-outline-primary']) !!}
              {!! Form::close() !!}
            </td>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -15,6 +17,9 @@ class CategoryController extends Controller
     public function index()
     {
 
+       $categories = Category::all();
+
+       return view('category.index', ['categories'=>$categories]);
     }
 
     /**
@@ -25,6 +30,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return view('category.create');
     }
 
     /**
@@ -33,9 +39,15 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         //
+        $input = $request->all();
+
+        $category = Category::create($input);
+        $category_id = Category::findOrFail($category->id)->id;
+
+        return redirect()->route('category.show', [$category_id]);
     }
 
     /**
@@ -47,6 +59,9 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
+        $category = Category::findOrFail($id);
+
+        return view('category.show', ['category'=>$category]);
     }
 
     /**
@@ -58,6 +73,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        $category = Category::findOrFail($id);
+
+        return view('category.edit', ['category'=> $category]);
     }
 
     /**
@@ -67,9 +85,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateRequest $request, $id)
     {
         //
+        $input = $request->all();
+        $category = Category::findOrFail($id);
+        $category->update($input);
+
+        return redirect()->route('category.show', ['category'=>$category]);
     }
 
     /**
@@ -81,5 +104,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('category.index');
     }
 }

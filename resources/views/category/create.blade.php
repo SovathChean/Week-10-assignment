@@ -6,15 +6,13 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                  Category
-                  <div  style="float: right">
-                    <a href="{{route('category.create')}}" class="btn btn-primary" > Add Category</a>
-                  </div>
+                  Create Category
+
                 </div>
 
                 <div class="card-body">
                   <div class="table-responsive">
-                     @include('category.includes.table')
+                     @include('category.includes.create')
                   </div>
                 </div>
             </div>
