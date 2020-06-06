@@ -31,6 +31,7 @@
                                  <td>{{$post->user->name}}</td>
 
                                  <td>
+                                   @if($post->user_id == $auth || $auth == 1)
                                    {!! Form::open(['method'=>'GET', 'action'=>['PostController@edit', $post->id], 'style'=>'display: inline-block']) !!}
                                    {!! Form::submit('update', ['class'=>'btn btn-outline-info']) !!}
                                    {!! Form::close() !!}
@@ -39,11 +40,13 @@
                                    {!! Form::submit('delete', ['class'=>'btn btn-outline-danger']) !!}
                                    {!! Form::close() !!}
 
+                                      <button type="submit" class="btn btn-outline-danger ajax-delete" data-url="{{ route('posts.ajax_delete', $post) }}" data-id="post-{{ $post->id }}">Ajax Delete</button>
+                                   @endif
                                    {!! Form::open(['method'=>'GET', 'action'=>['PostController@show', $post->id], 'style'=>'display: inline-block']) !!}
                                    {!! Form::submit('Show', ['class'=>'btn btn-outline-primary']) !!}
                                    {!! Form::close() !!}
 
-                                   <button type="submit" class="btn btn-outline-danger ajax-delete" data-url="{{ route('posts.ajax_delete', $post) }}" data-id="post-{{ $post->id }}">Ajax Delete</button>
+
                                  </td>
 
                              </tr>

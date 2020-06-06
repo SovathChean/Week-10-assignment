@@ -22,8 +22,9 @@ class PostController extends Controller
         //
         $num = config('setting.pagination_category_num');
         $posts = Post::paginate($num);
+        $auth = Auth::id();
 
-        return view('post.index', ['posts'=> $posts]);
+        return view('post.index', ['posts'=> $posts, 'auth'=>$auth]);
 
     }
 
@@ -84,10 +85,18 @@ class PostController extends Controller
     public function edit($id)
     {
         //
-       $post = Post::findOrFail($id);
-       $categories = DB::table('categories')->pluck('name', 'id')->all();
 
-       return view('post.edit', ['post'=>$post, 'categories'=>$categories]);
+       $post = Post::findOrFail($id);
+       $auth = Auth::id();
+       if($auth == $post->user_id){
+
+         $categories = DB::table('categories')->pluck('name', 'id')->all();
+
+         return view('post.edit', ['post'=>$post, 'categories'=>$categories]);
+       }
+      else {
+        return view('post.unauthorize');
+      }
     }
 
     /**
@@ -103,9 +112,12 @@ class PostController extends Controller
       $input = $request->all();
       $input['user_id'] = Auth::id();
       $post = Post::findOrFail($id);
-      $post->update($input);
+      if(Auth::id() == $post->user_id){
+        $post->update($input);
 
-      return redirect()->route('post.show', ['post'=>$post]);
+        return redirect()->route('post.show', ['post'=>$post]);
+       }
+     return view('post.unauthorize');
     }
 
     /**
@@ -118,19 +130,35 @@ class PostController extends Controller
     {
         //
       $post = Post::findOrFail($id);
-      $post->delete();
+      if(Auth::id() == $post->user_id)
+      {
+        $post->delete();
+        return redirect()->route('post.index');
+      }
 
-      return redirect()->route('post.index');
+     return view('post.unauthorize');
+
     }
 
     public function ajaxDestroy($id)
     {
         $post = Post::findOrFail($id);
-        $post->delete();
+        if(Auth::id() == $post->user_id)
+        {
+          $post->delete();
+          return response()->json([
+              'success' => true,
+              'message' => 'Deleted'
+          ]);
+        }
+        else{
+          return response()->json([
+              'success' => false,
+              'message' => 'Unauthorize access'
+          ]);
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Deleted'
-        ]);
+
+
     }
 }
