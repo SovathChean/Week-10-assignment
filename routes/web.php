@@ -25,10 +25,15 @@ Route::group([
     'middleware' => 'auth'
 ], function(){
    Route::resource('/post', 'PostController');
-   
+   Route::delete('posts/{post}/ajax-delete', 'PostController@ajaxDestroy')->name('posts.ajax_delete');
+
    Route::resource('/category', 'CategoryController');
+   Route::delete('category/{category}/ajax-delete', 'CategoryController@ajaxDestroy')->name('categories.ajax_delete');
 });
 
+
+
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');

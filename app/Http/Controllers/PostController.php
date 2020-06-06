@@ -122,4 +122,15 @@ class PostController extends Controller
 
       return redirect()->route('post.index');
     }
+
+    public function ajaxDestroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Deleted'
+        ]);
+    }
 }

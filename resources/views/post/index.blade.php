@@ -20,17 +20,16 @@
                             <th>#</th>
                             <th>Post</th>
                             <th>Author</th>
-                            <th>Category</th>
                             <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                              @foreach($posts as $post)
-                             <tr>
+                             <tr id="post-{{ $post->id }}">
                                  <td>{{$post->id}}</td>
                                  <td>{{$post->name}}</td>
                                  <td>{{$post->user->name}}</td>
-                                 <td>{{$post->category->name}}</td>
+
                                  <td>
                                    {!! Form::open(['method'=>'GET', 'action'=>['PostController@edit', $post->id], 'style'=>'display: inline-block']) !!}
                                    {!! Form::submit('update', ['class'=>'btn btn-outline-info']) !!}
@@ -43,6 +42,8 @@
                                    {!! Form::open(['method'=>'GET', 'action'=>['PostController@show', $post->id], 'style'=>'display: inline-block']) !!}
                                    {!! Form::submit('Show', ['class'=>'btn btn-outline-primary']) !!}
                                    {!! Form::close() !!}
+
+                                   <button type="submit" class="btn btn-outline-danger ajax-delete" data-url="{{ route('posts.ajax_delete', $post) }}" data-id="post-{{ $post->id }}">Ajax Delete</button>
                                  </td>
 
                              </tr>

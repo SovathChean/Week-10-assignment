@@ -106,7 +106,21 @@ class CategoryController extends Controller
         //
         $category = Category::findOrFail($id);
         $category->delete();
-
+        $post = Post::where('category_id', $id)->all();
+      
         return redirect()->route('category.index');
+    }
+
+    public function ajaxDestroy($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+        $post = Post::where('category_id', $id)->all();
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Deleted'
+        ]);
     }
 }

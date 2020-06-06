@@ -8,7 +8,7 @@
     </thead>
     <tbody>
        @foreach($categories as $category)
-       <tr>
+       <tr id="category-{{ $category->id }}" >
            <td>{{$category->id}}</td>
            <td>{{$category->name}}</td>
            <td>
@@ -23,6 +23,8 @@
              {!! Form::open(['method'=>'GET', 'action'=>['CategoryController@show', $category->id], 'style'=>'display: inline-block']) !!}
              {!! Form::submit('Show', ['class'=>'btn btn-outline-primary']) !!}
              {!! Form::close() !!}
+
+             <button type="submit" class="btn btn-outline-danger ajax-delete" data-url="{{ route('categories.ajax_delete', $category) }}" data-id="category-{{ $category->id }}">Ajax Delete</button>
            </td>
 
        </tr>
