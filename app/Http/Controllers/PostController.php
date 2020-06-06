@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostUpdateRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -30,6 +35,10 @@ class PostController extends Controller
     public function create()
     {
         //
+        $categories = DB::table('categories')->pluck('name', 'id')->all();
+
+        return view('post.create', ['categories'=>$categories]);
+
     }
 
     /**
@@ -38,9 +47,17 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         //
+        $input = $request->all();
+        $input['user_id'] = Auth::id();
+        $posts = Post::create($input);
+
+        $post = Post::findOrFail($posts->id)->id;
+
+        return redirect()->route('post.show', [$post]);
+
     }
 
     /**
@@ -52,6 +69,10 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $post = Post::findOrFail($id);
+
+        return view('post.show', ['post'=>$post]);
+
     }
 
     /**
@@ -63,7 +84,10 @@ class PostController extends Controller
     public function edit($id)
     {
         //
-        return ('hello'.$id);
+       $post = Post::findOrFail($id);
+       $categories = DB::table('categories')->pluck('name', 'id')->all();
+
+       return view('post.edit', ['post'=>$post, 'categories'=>$categories]);
     }
 
     /**
@@ -73,9 +97,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostUpdateRequest $request, $id)
     {
         //
+      $input = $request->all();
+      $input['user_id'] = Auth::id();
+      $post = Post::findOrFail($id);
+      $post->update($input);
+
+      return redirect()->route('post.show', ['post'=>$post]);
     }
 
     /**
@@ -87,6 +117,9 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        return ('hello'.$id);
+      $post = Post::findOrFail($id);
+      $post->delete();
+
+      return redirect()->route('post.index');
     }
 }

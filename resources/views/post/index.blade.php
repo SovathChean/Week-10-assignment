@@ -3,9 +3,14 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Post</div>
+                <div class="card-header">
+                  Post
+                  <div  style="float: right">
+                    <a href="{{route('post.create')}}" class="btn btn-primary" > Add Post </a>
+                  </div>
+                </div>
 
                 <div class="card-body">
                   <div class="table-responsive">
@@ -28,11 +33,15 @@
                                  <td>{{$post->category->name}}</td>
                                  <td>
                                    {!! Form::open(['method'=>'GET', 'action'=>['PostController@edit', $post->id], 'style'=>'display: inline-block']) !!}
-                                   {!! Form::submit('update', ['class'=>'btn btn-outline-info', 'style'=>'display: inline-block']) !!}
+                                   {!! Form::submit('update', ['class'=>'btn btn-outline-info']) !!}
                                    {!! Form::close() !!}
-                                
+
                                    {!! Form::open(['method'=>'DELETE', 'action'=>['PostController@destroy', $post->id], 'style'=>'display: inline-block']) !!}
                                    {!! Form::submit('delete', ['class'=>'btn btn-outline-danger']) !!}
+                                   {!! Form::close() !!}
+
+                                   {!! Form::open(['method'=>'GET', 'action'=>['PostController@show', $post->id], 'style'=>'display: inline-block']) !!}
+                                   {!! Form::submit('Show', ['class'=>'btn btn-outline-primary']) !!}
                                    {!! Form::close() !!}
                                  </td>
 
